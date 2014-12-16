@@ -122,15 +122,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 			mBuilder.setNumber(Integer.parseInt(msgcnt));
 		}
 
-		Log.d(TAG, "checking for sound");
+		Log.d(TAG, "checking for sound & soundUrl");
+		String soundUrlString = extras.getString("soundUrl");
 		String soundName = extras.getString("sound");
-    if (soundName != null) {
-    	Log.d(TAG, "sound name: "+soundName);
-    	String replacedSoundName = soundName.replace('-','_');
-			String soundPath = "android.resource://io.bandwagon.bandwagon/raw/"+replacedSoundName;
-			Log.d(TAG, "sound path: "+soundPath);
-    	Uri soundUri = Uri.parse(soundPath);
-      mBuilder.setSound(soundUri);
+    if (soundUrlString != null) {
+			Log.d(TAG, "got soundUrl: "+soundUrlString);
+			Log.d(TAG, "got soundName: "+soundUrlString);
+			String soundPath = "android.resource://"+this.getPackageName()+"/raw/"+soundName;
+    	Uri soundUrl = Uri.parse(soundPath);
+      mBuilder.setSound(soundUrl);
     }
 
 		int notId = 0;
