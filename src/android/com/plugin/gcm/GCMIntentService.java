@@ -133,6 +133,17 @@ public class GCMIntentService extends GCMBaseIntentService {
       mBuilder.setSound(soundUrl);
     }
 
+		Log.d(TAG, "checking for sound");
+		String soundName = extras.getString("sound");
+    if (soundName != null) {
+    	Log.d(TAG, "sound name: "+soundName);
+    	String replacedSoundName = soundName.replace('-','_');
+			String soundPath = "android.resource://"+this.getPackageName()+"/raw/"+replacedSoundName;
+			Log.d(TAG, "sound path: "+soundPath);
+    	Uri soundUri = Uri.parse(soundPath);
+      mBuilder.setSound(soundUri);
+    }
+
 		int notId = 0;
 
 		try {
