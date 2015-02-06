@@ -101,7 +101,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
-				.setDefaults(0)
+				.setDefaults(defaults)
 				.setSmallIcon(context.getApplicationInfo().icon)
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
@@ -115,6 +115,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 			mBuilder.setContentText(message);
 		} else {
 			mBuilder.setContentText("<missing message content>");
+		}
+
+		if (extras.getString("vibrate") != null) {
+			mBuilder.setVibrate([300, 300, 300, 300, 300, 300]);
 		}
 
 		String msgcnt = extras.getString("msgcnt");
