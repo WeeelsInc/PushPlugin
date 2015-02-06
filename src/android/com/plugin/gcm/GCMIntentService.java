@@ -3,6 +3,9 @@ package com.plugin.gcm;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -91,17 +94,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-		int defaults = Notification.DEFAULT_ALL;
-
-		if (extras.getString("defaults") != null) {
-			try {
-				defaults = Integer.parseInt(extras.getString("defaults"));
-			} catch (NumberFormatException e) {}
-		}
-
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
-				.setDefaults(defaults)
 				.setSmallIcon(context.getApplicationInfo().icon)
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
@@ -115,10 +109,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 			mBuilder.setContentText(message);
 		} else {
 			mBuilder.setContentText("<missing message content>");
-		}
-
-		if (extras.getString("vibrate") != null) {
-			mBuilder.setVibrate([300, 300, 300, 300, 300, 300]);
 		}
 
 		String msgcnt = extras.getString("msgcnt");
@@ -135,6 +125,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 			Log.d(TAG, "sound path: "+soundPath);
     	Uri soundUri = Uri.parse(soundPath);
       mBuilder.setSound(soundUri);
+      mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+    } else {
+    	mBuilder.setDefaults(Notification.DEFAULT_ALL);
     }
 
 		int notId = 0;
